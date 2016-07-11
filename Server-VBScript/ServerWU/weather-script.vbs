@@ -3,7 +3,8 @@
 ' Weather Underground version
 '
 ' James Blatchford
-' v1.0 30/1/2013
+' v1.0 30/1/2013	Initial release
+' v1.1 27/2/2014	Fix for dates overflowing available space after WUnderground changed the weekday field to be full name, and added a new weekday_short field
 '
 ' Based on the original Python script by Matthew Petroff
 ' http://www.mpetroff.net/archives/2012/09/14/kindle-weather-display/
@@ -18,7 +19,7 @@ Dim Highs(4), Lows(4), Icons(4), Dates(4)
 
 Set objXMLDoc = CreateObject("MSXML.DOMDocument") 
 objXMLDoc.async = False 
-'If objXMLDoc.load("http://api.wunderground.com/api/APIKEY/forecast/q/United Kingdom/London.xml") Then
+' EXAMPLE: http://api.wunderground.com/api/APIKEY/forecast/q/United Kingdom/London.xml") Then
 If objXMLDoc.load("http://api.wunderground.com/api/APIKEY/forecast/q/COUNTRY/CITY.xml") Then
 	Set objRoot = objXMLDoc.documentElement
 	Set arrForecast = objRoot.getElementsByTagName("simpleforecast")
@@ -26,25 +27,25 @@ If objXMLDoc.load("http://api.wunderground.com/api/APIKEY/forecast/q/COUNTRY/CIT
 	Set arrForecastDays = objForecastDays.childNodes
 
 	Set arrDate = arrForecastDays(0).getElementsByTagName("date")(0).childNodes
-	Dates(1) = arrDate(12).text & " " & arrDate(3).text & " " & arrDate(14).text
+	Dates(1) = arrDate(14).text & " " & arrDate(3).text & " " & arrDate(12).text
 	Highs(1) = arrForecastDays(0).selectSingleNode("high/celsius").text
 	Lows(1) = arrForecastDays(0).selectSingleNode("low/celsius").text
 	Icons(1) = arrForecastDays(0).selectSingleNode("icon").text
 	
 	Set arrDate = arrForecastDays(1).getElementsByTagName("date")(0).childNodes
-	Dates(2) = arrDate(12).text & " " & arrDate(3).text & " " & arrDate(14).text
+	Dates(2) = arrDate(12).text & " " & arrDate(3).text & " " & arrDate(13).text
 	Highs(2) = arrForecastDays(1).selectSingleNode("high/celsius").text
 	Lows(2) = arrForecastDays(1).selectSingleNode("low/celsius").text
 	Icons(2) = arrForecastDays(1).selectSingleNode("icon").text
 	
 	Set arrDate = arrForecastDays(2).getElementsByTagName("date")(0).childNodes
-	Dates(3) = arrDate(12).text & " " & arrDate(3).text & " " & arrDate(14).text
+	Dates(3) = arrDate(12).text & " " & arrDate(3).text & " " & arrDate(13).text
 	Highs(3) = arrForecastDays(2).selectSingleNode("high/celsius").text
 	Lows(3) = arrForecastDays(2).selectSingleNode("low/celsius").text
 	Icons(3) = arrForecastDays(2).selectSingleNode("icon").text
 	
 	Set arrDate = arrForecastDays(3).getElementsByTagName("date")(0).childNodes
-	Dates(4) = arrDate(12).text & " " & arrDate(3).text & " " & arrDate(14).text
+	Dates(4) = arrDate(12).text & " " & arrDate(3).text & " " & arrDate(13).text
 	Highs(4) = arrForecastDays(3).selectSingleNode("high/celsius").text
 	Lows(4) = arrForecastDays(3).selectSingleNode("low/celsius").text
 	Icons(4) = arrForecastDays(3).selectSingleNode("icon").text
